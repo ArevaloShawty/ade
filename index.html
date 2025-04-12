@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Feliz Cumpleaños Adela!</title>
+  <link rel="icon" href="pngtree-cute-kitty-cat-png-image_10236153.png" type="image/png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #a64ac9, #4a00e0);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      color: #39ff14;
+      font-family: monospace;
+      font-size: 0.9rem;
+      padding: 20px;
+      overflow: auto;
+      z-index: 9999;
+    }
+    #main-content {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3rem;
+      color: #ffe4f3;
+      margin-bottom: 20px;
+      animation: fadeInDown 2s ease-in-out forwards;
+    }
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fadeInUp 3s ease-in-out 1s forwards;
+    }
+    button {
+      background-color: #e0aaff;
+      color: #4a007e;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      opacity: 0;
+      animation: fadeInUp 2s ease-in-out 2s forwards;
+    }
+    button:hover {
+      background-color: #c77dff;
+    }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader"></div>
+  <div id="main-content">
+    <h1>¡Feliz Cumpleaños, Adela! 🎉</h1>
+    <p>Espero que hayas tenido un lindo día, tan lindo como tú.</p>
+
+    <p>Que hayan pasado cosas buenas y que no te hayan dejado mucha tarea…</p>
+    
+    <p>Para que me ayudes con la mía, que es bastante 😅.</p>
+    
+    <p>Nah, mentira querida 😄.</p>
+    
+    <p>Te mando un fuerte abrazo desde aquí, donde estoy.</p>
+   
+    <button onclick="showConfetti()">Haz clic para una sorpresa ✨</button>
+  </div>
+
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <script>
+    const loader = document.getElementById('loader');
+    const mainContent = document.getElementById('main-content');
+
+    function generateCodeLines() {
+      const lines = [
+        "function loveForever() {",
+        "  while (true) {",
+        "    console.log('Feliz cumpleaños Adela!');",
+        "  }",
+        "}",
+        "let pastel = '🎂';",
+        "let estrellas = Array(100).fill('✨');",
+        "console.log(pastel + estrellas.join(''));",
+        "// Compilando sentimientos...",
+        "if (hoy === 'cumpleaños') felicitar();",
+        "const regalo = { abrazos: Infinity, sonrisas: true };",
+        "console.log('Gracias por existir, Adela');",
+        "for (let deseo of deseos) enviar(deseo);"
+      ];
+
+      let fullText = '';
+      for (let i = 0; i < 50; i++) {
+        fullText += lines[Math.floor(Math.random() * lines.length)] + '\n';
+      }
+      return fullText;
+    }
+
+    window.addEventListener('load', () => {
+      loader.textContent = generateCodeLines();
+      setTimeout(() => {
+        loader.style.display = 'none';
+        mainContent.style.opacity = 1;
+      }, 5000);
+    });
+
+    function showConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let confetti = [];
+      for (let i = 0; i < 150; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * 20 + 10,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach(c => {
+          ctx.beginPath();
+          ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+          ctx.fillStyle = c.color;
+          ctx.fill();
+        });
+        update();
+      }
+
+      function update() {
+        confetti.forEach(c => {
+          c.y += Math.cos(c.d) + 1;
+          c.x += Math.sin(c.d);
+          if (c.y > canvas.height) {
+            c.y = -10;
+            c.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      (function animate() {
+        draw();
+        requestAnimationFrame(animate);
+      })();
+    }
+  </script>
+</body>
+</html>
